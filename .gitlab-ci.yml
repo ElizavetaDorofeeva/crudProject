@@ -13,7 +13,7 @@ variables:
 default:
   image: mcr.microsoft.com/dotnet/sdk:8.0
   tags:
-    - private  # ← обязательно, если у тебя Private Runner
+    - private  
 
 cache:
   key: "$CI_COMMIT_REF_SLUG-dotnet"
@@ -23,8 +23,7 @@ cache:
 before_script:
   - dotnet nuget locals all --list
   - export DOTNET_CLI_HOME="$CI_PROJECT_DIR/.nuget"
-
-# === Сборка (+2 артефакты, +2 кэш) ===
+  
 build:
   stage: build
   script:
@@ -35,16 +34,14 @@ build:
     paths:
       - $PUBLISH_OUTPUT/
     expire_in: 1 week
-
-# === Тесты (+2 балла) ===
+    
 test:
   stage: test
   script:
     - dotnet test --no-build --verbosity normal
   rules:
-    - if: '$CI_COMMIT_BRANCH == "test"'  # только в ветке test
-
-# === Деплой БЕЗ SSH (+3 балла) ===
+    - if: '$CI_COMMIT_BRANCH == "test"'  
+    
 deploy:
   stage: deploy
   script:
@@ -58,9 +55,8 @@ deploy:
   environment:
     name: production
   rules:
-    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/'  # только при тегах
-
-# === Откат (+4 балла) ===
+    - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/'  
+    
 rollback:
   stage: deploy
   script:
@@ -74,9 +70,8 @@ rollback:
         echo "❌ No backup found";
         exit 1;
       fi
-  when: manual  # запускается вручную из интерфейса GitLab
-
-# === Уведомление в Telegram (+3 балла) ===
+  when: manual  
+  
 notify-success:
   stage: notify
   image: curlimages/curl
@@ -106,18 +101,16 @@ notify-failure:
   rules:
     - if: '$CI_COMMIT_TAG =~ /^v\d+\.\d+\.\d+/'
       when: on_failure
-
-# === SAST (+1) и Secret Detection (+2) ===
+      
 include:
   - template: Jobs/SAST.gitlab-ci.yml
-
-# === Документация в Pages (+1) ===
+  
 pages:
   stage: deploy
   image: alpine:latest
   script:
     - mkdir -p public
-    - echo "<h1>WebApplication1 CI/CD</h1><p>Swagger: <a href='http://localhost:8080/swagger'>OpenAPI</a></p>" > public/index.html
+    - "echo '<h1>WebApplication1 CI/CD</h1><p>Swagger: <a href=\"http://localhost:7103/swagger\">OpenAPI</a></p>' > public/index.html"
   artifacts:
     paths:
       - public

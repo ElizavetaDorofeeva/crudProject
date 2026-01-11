@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kXG4aBog+VM=",
+  "dgSpecHash": "hyy08F+v6fU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\lizaa\\source\\repos\\crudProject\\WebApplication1.csproj",
+  "projectFilePath": "C:\\Users\\lizaa\\Source\\Repos\\ci-cd\\crudProject\\WebApplication1.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\lizaa\\.nuget\\packages\\microsoft.codecoverage\\18.0.1\\microsoft.codecoverage.18.0.1.nupkg.sha512",
     "C:\\Users\\lizaa\\.nuget\\packages\\microsoft.entityframeworkcore\\9.0.1\\microsoft.entityframeworkcore.9.0.1.nupkg.sha512",
